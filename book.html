@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>View Mutaradifaat-ul-Quran book</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.css" rel="stylesheet">
+    <link href="/css/global.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../img/favicon.jpg">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  <style>#demo-1{ color:lightBlue; }
+  		span.r1, span.r2, span.r3, span.r4{
+			font-size: 2.2em !important;
+			font-weight:bold !important;
+		}
+		span.r1 {
+			color: red;
+		}
+		span.r2 {
+			color: green;
+		}
+		span.r3 {
+			color: blue;
+		}
+		span.r4 {
+			color: purple;
+		}
+		.arr{
+			line-height: 49px !important;
+			font-size:3.8em !important;
+		}
+		.arr2{
+			line-height: 49px !important;
+			font-size:2.1em !important;
+		}
+		.arr3{
+			line-height: 49px !important;
+			//font-size:2.5em !important;
+		}
+		.small{
+			font-size:0.8em !important;
+		}
+		.arabic{
+			font-size: 2.8em;
+		}
+		div#results{
+			max-height: 400px;
+			overflow: auto;
+		}
+  </style>
+ <!-- <script src="lib/jquery-1.7.min.js" Xsrc="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="js/GlobalQuran.js?v=3.4"></script> -->
+    <script src="lib/jquery-1.7.min.js"></script>
+</head>
+<body>
+  	<div class="mainbar">
+      <div class="mainbar-inner">
+        <div class="container">
+          <a class="btn btn-mainbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+         
+          <div class="nav-collapse">
+            <ul class="nav pull-right">
+              <li><a href="http://blog.globalquran.com/forums/">Feedback</a></li>
+              <li><a href="http://labs.globalquran.com"><img src="../img/favicon.jpg" width="18" /> Back to Lab</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+	  
+	  <!-- <div class="container"> -->
+	  <div class="container-fluid">
+		<H1>Mutaradifaat-ul-Quran Book</H1>
+		<div class="row-fluid">
+			<div class="span3">	 <!--Sidebar content--><BR/>
+				<div id=data>
+					Urdu page number: <input onchange=GoPage() type=text id=pageno value=67 title="page #" />
+					<input onclick=GoPage() type=button id=submit value=Go title=Go />
+				</div><BR>
+				<div id=data>
+					English page number: <input onchange=GoEnPage() type=text id=enpageno value=85 title="page #" />
+					<input onclick=GoEnPage() type=button id=submit value=Go title=Go />
+				</div><BR><!--
+				<strong>Dashboard:</strong>
+				<div id=status></div><BR>
+				<strong>Raw:</strong>-->
+				<div id=results></div>
+			</div>
+			<strong>Page contents:</strong>
+			<div id=results2 class="span9" style="min-height: 600px;">
+			  <!--Body content-->
+			  <div id=divPDF>&nbsp;</div>
+			</div>
+		  </div>
+		</div>
+	</div>
+<!-- check if any query params. handle.-->
+<script>
+var urlParams = {};
+(function () {
+    var e,
+        a = /\+/g,  // Regex for replacing addition symbol with a space
+        r = /([^&=]+)=?([^&]*)/g,
+        d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+        q = window.location.search.substring(1);
+
+    while (e = r.exec(q))
+       urlParams[d(e[1])] = d(e[2]);
+})();
+</script>
+
+<!--
+page topic
+11 - 34		index1 (urdu topic, arabic forms)
+35 - 66		index2 (arabic root to urdu topic name)
+978			Antonyms
+976			Verbs becoming Antonym on changing 1 root letter
+
+816		Forgiver
+818		God (ma3buwd)
+799		Helper
+828		Merciful
+256		Samad
+327		Creator
+-->
+<script>
+var GoPage = function(){
+	var pageno, mappedpageno, offset, temp, width, height, BOOKLINK = "<A HREF='$URL' TARGET=_>Link to PDF of this part</A><BR><BR><A HREF='http://archive.org/details/MutaraadifaatUlQuran-UrduToEnglishProject-10PageSplitsOfficial' TARGET=_>Link to all PDF parts.</A>", URL = "http://ia600405.us.archive.org/16/items/MutaraadifaatUlQuran-UrduToEnglishProject-10PageSplitsOfficial/Mutaradifaat-ul-Quran-COMPLETE.$PAGE.pdf#page=$OFFSET";
+	//Ex: http://ia600405.us.archive.org/16/items/MutaraadifaatUlQuran-UrduToEnglishProject-10PageSplitsOfficial/Mutaradifaat-ul-Quran-COMPLETE.00031.pdf#page=7
+	pageno = $('#pageno').val();
+	if(! (pageno = parseInt(pageno) ) ){ alert('enter valid page number.'); return; }
+	$('#enpageno').val( pageno + 18 );
+	mappedpageno = 1 + parseInt( (pageno + 18) / 10 );
+	offset = (pageno + 18) - 10*(mappedpageno-1);
+	
+	temp = 100000 + mappedpageno;
+	temp = (temp + '').substring(1);
+	URL = URL.replace(/\$PAGE/g, temp).replace(/\$OFFSET/g, offset); console.log(pageno +' '+ mappedpageno +' ' + offset + ' ' + URL);
+	
+	height = "600px";
+	document.getElementById("divPDF").innerHTML = "<OBJECT id='objPDF' DATA='"+ URL +"' TYPE=\"application/pdf\" TITLE=\"IMAGING\" WIDTH=\"100%\" HEIGHT=\"" + height +"\"></object>";
+	$('#results').html( BOOKLINK.replace(/\$URL/, URL ) );
+}
+
+var GoEnPage = function(){
+	var pageno = $('#enpageno').val();
+	if(! (pageno = parseInt(pageno) ) ){ alert('enter valid page number.'); return; }
+	$('#pageno').val( pageno - 18 );
+	GoPage();
+}
+
+ $(document).ready(function() {
+	var fields = ["pageno", "enpageno"], loaded=false;
+	$.each(fields, function(fieldno, field){
+		if(urlParams[ field ] && parseInt( urlParams[field] ) ){
+			$('#'+field).val( urlParams[field] );
+			$('#'+field).next().click(); loaded=true;
+		}
+	});
+	if(!loaded) GoPage();
+})();
+</script>
+</body>
